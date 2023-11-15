@@ -30,7 +30,7 @@ model Server{
   id String @id @default(uuid())
   name String
   imageUrl String @db.Text
-  inviteCode String @db.Text
+  inviteCode String @unique
   profileId String
   members Member[]
   channels Channel[]
@@ -71,21 +71,15 @@ enum ChannelType{
 }
 
 model Channel{
-id String @id @default(uuid())
-name String
-type ChannelType @default(TEXT)
-
-profileId String
+  id String @id @default(uuid())
+  name String
+  type ChannelType @default(TEXT)
+  profileId String
   profile Profile @relation(fields:[profileId],references:[id],onDelete:Cascade)
-
-   serverId String
+  serverId String
   server Server @relation(fields:[serverId],references:[id],onDelete:Cascade)
- 
- createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-
- @@index([serverId])
- @@index([profileId])
-
+  @@index([serverId])
+  @@index([profileId])
 }
