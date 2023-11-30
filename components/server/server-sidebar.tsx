@@ -9,6 +9,7 @@ import { ServerSearch } from "./server-search";
 import { Separator } from "../ui/separator";
 import {ServerSection} from "./serversection";
 import { ServerChannel } from "./server-channel";
+import { ServerMember } from "./server-member";
 
 interface ServerSidebarProps {
   serverId: string;
@@ -184,6 +185,15 @@ return (
               label="Members"
               server={server}
             />
+          <div className="space-y-[2px]">
+            {members.map((member) => (
+              <ServerMember
+                key={member.id}
+                member={member}
+                server={server}
+              />
+              ))}
+            </div>
           </div>
         )}
       </ScrollArea>
