@@ -1,8 +1,11 @@
 import { ChatHeader } from "@/components/chat/chat-header";
 import { ChatInput } from "@/components/chat/chat-input";
+import { ChatMessages } from "@/components/chat/chat-messages";
+import { MediaRoom } from "@/components/media-room";
 import { currentProfile } from "@/lib/current-profile";
 import { db } from "@/lib/db";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { ChannelType } from "@prisma/client";
 import { redirect } from "next/navigation";
 
 interface ChannelIdPageProps {
@@ -42,15 +45,46 @@ const ChannelIdPage =async ({params}:ChannelIdPageProps) => {
         serverId={channel.serverId}
         type="channel"
       />
-      <div className='flex-1'>Future name</div>
+      {channel.type === ChannelType.TEXT &&(
+        <>
+        <ChatMessages 
+      name={channel.name}
+      type="channel" 
+      member={member}
+      chatId={channel.id}
+      apiUrl='/api/messages'
+      socketUrl='/api/socket/messages'
+      socketQuery={{
+        channelId:channel.id,
+        serverId:channel.serverId,
+      }}
+      paramKey='channelId'
+      paramValue={channel.id}
+      />
       <ChatInput
       name={channel.name}
       apiUrl='/api/socket/messages'
       type='channel'
       query={{
-       channelId:channel.id,
+        channelId:channel.id,
         serverId:channel.serverId,}}
-       />
+      />
+        </>
+      )}
+      {channel.type === ChannelType.AUDIO &&(
+        <MediaRoom 
+          chatId={channel.id}
+          video={false}
+          audio={true}
+      
+        />
+      )}
+        {channel.type === ChannelType.VIDEO &&(
+        <MediaRoom 
+          chatId={channel.id}
+          video={false}
+          audio={true}
+        />)}
       </div>
   );
 }

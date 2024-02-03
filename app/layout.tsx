@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/components/providers/theme-provider'
  import { ModalProvider } from '@/components/providers/modal-provider'
 import { Socket } from 'socket.io'
 import { SocketProvider } from '@/components/providers/socket-provider'
-
+import { QueryProvider } from '@/components/providers/query-provider'
 const font = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -34,7 +34,9 @@ export default function RootLayout({
       >
       <SocketProvider>
       <ModalProvider />
+      <QueryProvider>
         {children}    
+      </QueryProvider>
       </SocketProvider>     
       </ThemeProvider>        
       </body>
